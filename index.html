@@ -71,14 +71,15 @@
       margin:18px auto 0;max-width:500px;
       font-size:16px;line-height:1.7;color:rgba(255,255,255,.72);font-weight:400;
     }
-    .hero-btns{margin-top:28px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .hero-btns{margin-top:28px;display:flex;justify-content:center;gap:10px;flex-wrap:nowrap}
 
     /* ─── BUTTONS ─── */
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;
       padding:13px 26px;border-radius:980px;font-size:15px;font-weight:500;
       text-decoration:none;transition:all .22s ease;cursor:pointer;border:none;white-space:nowrap}
-    .hero-btns .btn{min-width:180px}
-    .btn svg{width:17px;height:17px;flex-shrink:0}
+    .hero-btns .btn{padding:9px 18px;font-size:13px;min-width:auto}
+    .btn svg{width:15px;height:15px;flex-shrink:0}
+    .hero-btns .btn svg{width:14px;height:14px}
     .btn-w{background:#fff;color:#1d1d1f}
     .btn-w:hover{background:#f0f0f0}
     .btn-glass{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
@@ -160,7 +161,8 @@
       .hero-inner{padding:28px 18px 22px;border-radius:22px}
       .hero h1{font-size:30px}
       .hero-desc{font-size:15px}
-      .hero-btns{flex-direction:column;align-items:stretch;gap:10px;padding:0 16px}
+      .hero-btns{flex-direction:row;align-items:center;justify-content:center;gap:8px;padding:0 10px;flex-wrap:wrap}
+      .hero-btns .btn{padding:8px 12px;font-size:12px}
       .hero-logo{width:72px;height:72px;border-radius:18px;margin-bottom:18px}
       .dl{padding:48px 16px 56px}
       .dl-grid{grid-template-columns:1fr;gap:12px}
