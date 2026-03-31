@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>云际听悟 - 企业级音视频协作平台</title>
+  <meta name="description" content="云际听悟 - 安全、稳定、低延迟的企业远程会议解决方案，支持全平台。">
+  <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+      color:#1d1d1f;background:#fff;line-height:1.47;
+    }
+
+    /* ─── NAV ─── */
+    .nav{position:sticky;top:0;z-index:100;height:48px;
+      background:rgba(251,251,253,.72);
+      -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+      border-bottom:.5px solid rgba(0,0,0,.08)}
+    .nav-inner{max-width:980px;margin:0 auto;height:100%;padding:0 22px;
+      display:flex;align-items:center;justify-content:space-between}
+    .nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:#1d1d1f}
+    .nav-brand img{width:26px;height:26px;border-radius:6px}
+    .nav-brand span{font-size:14px;font-weight:600;letter-spacing:.01em}
+    .nav-cta{font-size:12px;padding:6px 16px;border-radius:980px;
+      background:#0071e3;color:#fff;text-decoration:none;font-weight:500;
+      transition:background .2s}
+    .nav-cta:hover{background:#0077ed}
+
+    /* ─── HERO ─── */
+    .hero{
+      position:relative;overflow:hidden;
+      padding:72px 20px 56px;
+      background:#050608;color:#fff;
+    }
+    .hero::before{content:"";position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,113,227,.28),transparent),
+        radial-gradient(ellipse 60% 50% at 80% 100%,rgba(52,199,89,.15),transparent);
+      pointer-events:none}
+    .hero-inner{
+      position:relative;z-index:1;max-width:620px;margin:0 auto;
+      padding:36px 28px 30px;
+      border-radius:28px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 24px 60px rgba(0,0,0,.28);
+      text-align:center;
+    }
+    .hero-logo{
+      width:84px;height:84px;border-radius:22px;
+      box-shadow:0 0 0 1px rgba(255,255,255,.1),0 18px 42px rgba(0,0,0,.42);
+      margin:0 auto 22px;display:block;
+      background:rgba(255,255,255,.04);
+      padding:6px;
+    }
+    .hero h1{
+      font-size:clamp(32px,5vw,48px);font-weight:700;
+      line-height:1.08;letter-spacing:-.04em;
+      max-width:520px;
+      margin:0 auto;
+    }
+    .hero h1 em{
+      font-style:normal;
+      background:linear-gradient(90deg,#5ac8fa,#34c759);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .hero-desc{
+      margin:18px auto 0;max-width:500px;
+      font-size:16px;line-height:1.7;color:rgba(255,255,255,.72);font-weight:400;
+    }
+    .hero-btns{margin-top:28px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+    /* ─── BUTTONS ─── */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      padding:13px 26px;border-radius:980px;font-size:15px;font-weight:500;
+      text-decoration:none;transition:all .22s ease;cursor:pointer;border:none;white-space:nowrap}
+    .hero-btns .btn{min-width:180px}
+    .btn svg{width:17px;height:17px;flex-shrink:0}
+    .btn-w{background:#fff;color:#1d1d1f}
+    .btn-w:hover{background:#f0f0f0}
+    .btn-glass{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
+    .btn-glass:hover{background:rgba(255,255,255,.2)}
+    .btn-blue{background:#0071e3;color:#fff}
+    .btn-blue:hover{background:#0077ed}
+    .btn-outline{background:transparent;color:#0071e3;border:1px solid #0071e3}
+    .btn-outline:hover{background:#0071e3;color:#fff}
+    .btn-dark{background:#1d1d1f;color:#fff}
+    .btn-dark:hover{background:#424245}
+    .btn-soft{background:#f5f5f7;color:#1d1d1f;border:1px solid rgba(0,0,0,.06)}
+    .btn-soft:hover{background:#e8e8ed}
+
+    /* ─── DOWNLOAD SECTION ─── */
+    .dl{max-width:980px;margin:0 auto;padding:72px 22px 80px}
+    .dl-head{text-align:center;margin-bottom:48px}
+    .dl-kicker{font-size:14px;font-weight:600;color:#0071e3;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+    .dl-head h2{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+    .dl-head p{margin-top:10px;color:#86868b;font-size:17px;max-width:500px;margin-left:auto;margin-right:auto}
+    .dl-status{margin:14px auto 0;min-height:22px;max-width:520px;border-radius:10px;padding:8px 12px;
+      font-size:12.5px;line-height:1.4;background:#f5f5f7;color:#515154;opacity:0;transform:translateY(-2px);
+      transition:opacity .2s ease,transform .2s ease}
+    .dl-status.show{opacity:1;transform:translateY(0)}
+    .dl-status.ok{background:#e9f7ef;color:#1f6f43}
+    .dl-status.warn{background:#fff4e5;color:#9a5b00}
+
+    .dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .dl-card{
+      position:relative;padding:28px 22px 24px;border-radius:18px;
+      background:#fbfbfd;border:1px solid rgba(0,0,0,.06);
+      transition:transform .3s ease,box-shadow .3s ease;
+      display:flex;flex-direction:column;
+    }
+    .dl-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+    .dl-badge{position:absolute;top:14px;right:14px;padding:3px 10px;border-radius:980px;
+      font-size:11px;font-weight:600;background:#0071e3;color:#fff}
+    .dl-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+    .dl-icon svg{width:24px;height:24px}
+    .dl-icon.i-android{background:#e8f5e9;color:#34a853}
+    .dl-icon.i-apple{background:#f3e5f5;color:#1d1d1f}
+    .dl-icon.i-win{background:#e3f2fd;color:#0078d4}
+    .dl-icon.i-linux{background:#fff3e0;color:#e65100}
+    .dl-icon.i-web{background:#e0f7fa;color:#00838f}
+    .dl-card h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
+    .dl-card>p{margin-top:6px;font-size:13.5px;color:#86868b;line-height:1.55;flex:1}
+    .dl-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+    .tag{padding:3px 9px;border-radius:6px;font-size:11.5px;color:#6e6e73;background:#f0f0f0}
+    .dl-card .btn{margin-top:16px;padding:10px 0;font-size:14px;width:100%;text-align:center}
+
+    /* ─── FEATURES ─── */
+    .feat-section{background:#f5f5f7;padding:72px 22px}
+    .feat-wrap{max-width:980px;margin:0 auto}
+    .feat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+    .feat-box{padding:24px 20px;border-radius:14px;background:#fff}
+    .feat-dot{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#0071e3,#34c759);color:#fff;margin-bottom:14px}
+    .feat-dot svg{width:18px;height:18px}
+    .feat-box h4{font-size:15px;font-weight:600}
+    .feat-box p{margin-top:5px;font-size:12.5px;color:#86868b;line-height:1.55}
+
+    .legal{max-width:980px;margin:0 auto;padding:0 22px 48px}
+    .legal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .legal-card{background:#fbfbfd;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:18px 16px}
+    .legal-card h4{font-size:14px;font-weight:600;color:#1d1d1f}
+    .legal-card p{margin-top:8px;font-size:12.5px;color:#6e6e73;line-height:1.6}
+
+    /* ─── FOOTER ─── */
+    .ft{border-top:.5px solid rgba(0,0,0,.06);padding:20px 22px}
+    .ft-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+    .ft p{font-size:11.5px;color:#86868b}
+    .ft-links{display:flex;gap:14px}
+    .ft-links a{font-size:11.5px;color:#6e6e73;text-decoration:none}
+    .ft-links a:hover{color:#0071e3}
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:900px){.dl-grid{grid-template-columns:repeat(2,1fr)}.feat-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){
+      .hero{padding:48px 14px 38px}
+      .hero-inner{padding:28px 18px 22px;border-radius:22px}
+      .hero h1{font-size:30px}
+      .hero-desc{font-size:15px}
+      .hero-btns{flex-direction:column;align-items:stretch;gap:10px;padding:0 16px}
+      .hero-logo{width:72px;height:72px;border-radius:18px;margin-bottom:18px}
+      .dl{padding:48px 16px 56px}
+      .dl-grid{grid-template-columns:1fr;gap:12px}
+      .dl-card{padding:22px 18px 20px}
+      .feat-row{grid-template-columns:1fr}
+      .legal-grid{grid-template-columns:1fr}
+      .ft-inner{flex-direction:column;text-align:center}
+      .nav-cta{padding:5px 12px;font-size:11px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="#"><img src="logo.png" alt="TYTW"><span>云际听悟</span></a>
+</div></nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <img class="hero-logo" src="logo.png" alt="云际听悟">
+    <h1>企业级<em>安全会议</em><br>全平台覆盖</h1>
+    <p class="hero-desc">端到端加密、超低延迟，为团队提供稳定可靠的远程音视频协作体验。</p>
+    <div class="hero-btns">
+      <a class="btn btn-w" href="云际听悟.apk" data-download="云际听悟.apk" download="云际听悟.apk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Android 下载</a>
+      <a class="btn btn-glass" href="https://testflight.apple.com/join/kFPQhPNU" target="_blank" rel="noopener" data-open="iOS TestFlight">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        iOS TestFlight</a>
+      <a class="btn btn-w" href="https://nb.lkah.baby" target="_blank" rel="noopener" data-open="Web 网页版">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Web 网页版</a>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section class="dl" id="downloads">
+  <div class="dl-head">
+    <div class="dl-kicker">Downloads</div>
+    <h2>选择你的平台</h2>
+    <p>一个授权码，全平台入会。</p>
+    <div class="dl-status" id="dlStatus" aria-live="polite"></div>
+  </div>
+
+  <div class="dl-grid">
+
+    <!-- Android -->
+    <div class="dl-card">
+      <span class="dl-badge">推荐</span>
+      <div class="dl-icon i-android"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48C13.85 1.23 12.95 1 12 1c-.96 0-1.86.23-2.66.63L7.85.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31C6.97 3.26 6 5.01 6 7h12c0-1.99-.97-3.75-2.47-4.84zM10 5H9V4h1v1zm5 0h-1V4h1v1z"/></svg></div>
+      <h3>Android</h3>
+      <p>Android 6.0+，正式签名 APK</p>
+      <div class="dl-tags"><span class="tag">手机 &amp; 平板</span><span class="tag">正式签名</span></div>
+      <a class="btn btn-blue" href="云际听悟.apk" data-download="云际听悟.apk" download="云际听悟.apk">下载 APK</a>
+    </div>
+
+    <!-- iOS -->
+    <div class="dl-card">
+      <div class="dl-icon i-apple"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div>
+      <h3>iOS / iPadOS</h3>
+      <p>通过 TestFlight 安装，iOS 12+</p>
+      <div class="dl-tags"><span class="tag">TestFlight</span><span class="tag">iPhone &amp; iPad</span></div>
+      <a class="btn btn-dark" href="https://testflight.apple.com/join/kFPQhPNU" target="_blank" rel="noopener" data-open="iOS TestFlight">TestFlight 安装</a>
+    </div>
+
+    <!-- Windows -->
+    <div class="dl-card">
+      <div class="dl-icon i-win"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.5l8-1.1V12H3zm9-6.8L22 3.5V12H12V5.2zM3 13h8v6.6l-8-1.1V13zm9 0h10v8.5l-10-1.7V13z"/></svg></div>
+      <h3>Windows</h3>
+      <p>Windows 10+，桌面会议首选</p>
+      <div class="dl-tags"><span class="tag">EXE</span><span class="tag">x64</span></div>
+      <a class="btn btn-soft" href="云际听悟.exe" data-download="云际听悟.exe" download="云际听悟.exe">下载 Windows 版</a>
+    </div>
+
+    <!-- Linux -->
+    <div class="dl-card">
+      <div class="dl-icon i-linux"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.581 19.049c-.55-.446-.336-1.431-.907-1.917.553-3.365-.997-6.331-2.845-8.232-1.551-1.595-3.005-3.222-3.005-5.464 0-.637-.077-1.222-.3-1.627A1.125 1.125 0 0012.5 1.5h-1a1.125 1.125 0 00-1.024.309c-.223.405-.3.99-.3 1.627 0 2.242-1.453 3.869-3.005 5.464-1.848 1.9-3.398 4.867-2.845 8.232-.571.486-.357 1.471-.907 1.917-.372.302-.138.86.218 1.108.803.559 1.853.762 2.806.831.952.069 1.769-.065 2.748-.065h3.616c.979 0 1.796.134 2.748.065.953-.069 2.003-.272 2.806-.831.356-.249.59-.806.218-1.108z"/></svg></div>
+      <h3>Linux</h3>
+      <p>Debian / Ubuntu .deb 安装包</p>
+      <div class="dl-tags"><span class="tag">.deb</span><span class="tag">x64</span></div>
+      <a class="btn btn-soft" href="云际听悟.deb" data-download="云际听悟.deb" download="云际听悟.deb">下载 Linux 版</a>
+    </div>
+
+    <!-- Web -->
+    <div class="dl-card">
+      <div class="dl-icon i-web"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+      <h3>Web 网页版</h3>
+      <p>免安装，浏览器直接入会</p>
+      <div class="dl-tags"><span class="tag">Chrome / Edge</span><span class="tag">免安装</span></div>
+      <a class="btn btn-soft" href="https://nb.lkah.baby" target="_blank" rel="noopener" data-open="Web 网页版">打开网页版</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="feat-section">
+  <div class="feat-wrap">
+    <div class="dl-head">
+      <div class="dl-kicker">Why Tongyi</div>
+      <h2>企业级安全与性能</h2>
+    </div>
+    <div class="feat-row">
+      <div class="feat-box">
+        <div class="feat-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h4>端到端加密</h4>
+        <p>E2EE 保障会议内容只有参会者可见。</p>
+      </div>
+      <div class="feat-box">
+        <div class="feat-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h4>超低延迟</h4>
+        <p>WebRTC 毫秒级传输，沟通如面对面。</p>
+      </div>
+      <div class="feat-box">
+        <div class="feat-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h4>屏幕共享</h4>
+        <p>一键共享桌面或窗口，高效协作。</p>
+      </div>
+      <div class="feat-box">
+        <div class="feat-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h4>多人会议</h4>
+        <p>多方同时接入，满足各种远程场景。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="legal" aria-label="法律与联系信息">
+  <div class="legal-grid">
+    <article class="legal-card" id="privacy">
+      <h4>隐私政策</h4>
+      <p>我们仅收集会议必要信息用于身份验证与服务质量保障，不会出售用户数据。</p>
+    </article>
+    <article class="legal-card" id="terms">
+      <h4>服务条款</h4>
+      <p>使用本服务即视为同意合法合规使用平台，禁止用于违法或侵犯他人权益的场景。</p>
+    </article>
+    <article class="legal-card" id="contact">
+      <h4>联系我们</h4>
+      <p>如需商务合作或技术支持，请联系平台管理员获取处理通道。</p>
+    </article>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="ft"><div class="ft-inner">
+  <p>&copy; 2026 云际听悟</p>
+  <div class="ft-links"><a href="#privacy">隐私政策</a><a href="#terms">服务条款</a><a href="#contact">联系我们</a></div>
+</div></footer>
+
+<script>
+  (function () {
+    const statusEl = document.getElementById('dlStatus');
+    if (!statusEl) return;
+
+    let timer = null;
+    const showStatus = (text, tone) => {
+      statusEl.textContent = text;
+      statusEl.className = 'dl-status show ' + (tone || 'ok');
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        statusEl.className = 'dl-status';
+      }, 3200);
+    };
+
+    document.querySelectorAll('[data-download]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const fileName = btn.getAttribute('data-download') || '安装包';
+        showStatus('正在下载 ' + fileName + '，若浏览器拦截请在下载列表中允许。', 'ok');
+      });
+    });
+
+    document.querySelectorAll('[data-open]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetName = btn.getAttribute('data-open') || '目标页面';
+        showStatus('正在打开 ' + targetName + '。', 'warn');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
