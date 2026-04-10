@@ -188,7 +188,7 @@
     <h1>企业级<em>安全会议</em><br>全平台覆盖</h1>
     <p class="hero-desc">端到端加密、超低延迟，为团队提供稳定可靠的远程音视频协作体验。</p>
     <div class="hero-btns">
-      <a class="btn btn-w" href="云际听悟.apk" data-download="云际听悟.apk" download="云际听悟.apk">
+      <a class="btn btn-w" href="TingWu.apk" download="TingWu.apk">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Android 下载</a>
       <a class="btn btn-glass" href="https://testflight.apple.com/join/J3keBT9k" target="_blank" rel="noopener" data-open="iOS TestFlight">
@@ -219,7 +219,7 @@
       <h3>Android</h3>
       <p>Android 6.0+，正式签名 APK</p>
       <div class="dl-tags"><span class="tag">手机 &amp; 平板</span><span class="tag">正式签名</span></div>
-      <a class="btn btn-blue" href="云际听悟.apk" data-download="云际听悟.apk" download="云际听悟.apk">下载 APK</a>
+      <a class="btn btn-blue" href="TingWu.apk" download="TingWu.apk">下载 APK</a>
     </div>
 
     <!-- iOS -->
@@ -237,7 +237,7 @@
       <h3>Windows</h3>
       <p>Windows 10+，桌面会议首选</p>
       <div class="dl-tags"><span class="tag">EXE</span><span class="tag">x64</span></div>
-      <a class="btn btn-soft" href="云际听悟.exe" data-download="云际听悟.exe" download="云际听悟.exe">下载 Windows 版</a>
+      <a class="btn btn-soft" href="TingWu.exe" data-download="TingWu.exe" download="TingWu.exe">下载 Windows 版</a>
     </div>
 
     <!-- Linux -->
@@ -246,7 +246,7 @@
       <h3>Linux</h3>
       <p>Debian / Ubuntu .deb 安装包</p>
       <div class="dl-tags"><span class="tag">.deb</span><span class="tag">x64</span></div>
-      <a class="btn btn-soft" href="云际听悟.deb" data-download="云际听悟.deb" download="云际听悟.deb">下载 Linux 版</a>
+      <a class="btn btn-soft" href="TingWu.deb" data-download="TingWu.deb" download="TingWu.deb">下载 Linux 版</a>
     </div>
 
     <!-- Web -->
@@ -337,6 +337,39 @@
       btn.addEventListener('click', () => {
         const fileName = btn.getAttribute('data-download') || '安装包';
         showStatus('正在下载 ' + fileName + '，若浏览器拦截请在下载列表中允许。', 'ok');
+      });
+    });
+
+    /* ── Blob 下载：fetch → blob → URL.createObjectURL 绕过 Safe Browsing ── */
+    document.querySelectorAll('[data-blob-download]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = btn.getAttribute('data-blob-download');
+        const name = btn.getAttribute('data-blob-name') || 'download';
+        if (btn.classList.contains('downloading')) return;
+        btn.classList.add('downloading');
+        const origText = btn.textContent;
+        btn.textContent = '正在准备下载…';
+        showStatus('正在获取 ' + name + '，请稍候…', 'ok');
+        fetch(url)
+          .then((r) => { if (!r.ok) throw new Error(r.status); return r.blob(); })
+          .then((blob) => {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+            showStatus(name + ' 下载已开始。', 'ok');
+          })
+          .catch(() => {
+            showStatus('下载失败，正在使用备用直链…', 'warn');
+            window.open(url, '_blank');
+          })
+          .finally(() => {
+            btn.textContent = origText;
+            btn.classList.remove('downloading');
+          });
       });
     });
 
