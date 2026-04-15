@@ -929,6 +929,27 @@
           const fileName = btn.getAttribute('data-download') || '安装包';
           const url = btn.getAttribute('href');
 
+          // HTTPS 页面下不能 fetch HTTP 资源，改为浏览器直链下载避免 Mixed Content 拦截。
+          if (window.location.protocol === 'https:' && /^http:\/\//i.test(url)) {
+            openModal('正在打开下载…', '当前页面为 HTTPS，已切换为浏览器直链下载。');
+            spinnerEl.style.display = 'none';
+            progressWrap.style.display = 'none';
+            titleEl.textContent = '请在新标签页中继续下载';
+            descEl.textContent = '若浏览器提示风险，请点击保留后继续安装。';
+            closeBtn.style.display = '';
+            closeBtn.textContent = '我知道了';
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            return;
+          }
+
           openModal('下载中，请稍候…', '正在下载 ' + fileName + '，下载完成前请勿离开。');
           progressWrap.style.display = '';
 
